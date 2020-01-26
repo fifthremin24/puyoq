@@ -2,7 +2,7 @@
 
 ## 実動作環境
 
-* https://fifthremin24.github.io/puyoq/landing/
+* https://fifthremin24.github.io/puyoq/landing/index.html
 
 ## 開発環境
 
