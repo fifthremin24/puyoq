@@ -109,6 +109,8 @@
   export default {
     name: 'AppMain',
 
+    app: "landing",
+
     data: () => ({
       rules: {
         required: (v) => !!v || 'Required',
@@ -163,8 +165,10 @@
       landingSucceeded: false,
       landingErrorMessage: "",
 
+      debug: false,
+
       inputs: {
-        version: 1,
+        version: 2,
         eventAbilityCards: [
           { label: "Lv1", index: 0, value: 9, internal_supporter: true, external_supporter: true },
           { label: "Lv2", index: 1, value: 1, internal_supporter: true, external_supporter: true },
@@ -178,8 +182,8 @@
       },
     }),
     mounted () {
-      if (localStorage.inputs) {
-        let saved = JSON.parse(localStorage.inputs)
+      if (localStorage[this.app] && !this.debug) {
+        let saved = JSON.parse(localStorage[this.app])
         if (saved && saved.version == this.inputs.version) {
           this.inputs = saved;
         }
@@ -188,7 +192,7 @@
     watch: {
       inputs: {
         handler (v) {
-          localStorage.inputs = JSON.stringify(v);
+          localStorage[this.app] = JSON.stringify(v);
         },
         deep: true,
       },
