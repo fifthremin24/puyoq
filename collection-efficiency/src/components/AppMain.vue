@@ -83,7 +83,7 @@
             </v-row>
             <v-row>
               <v-col class="mt-n2 pt-0">
-                <v-text-field label="周回時のドロップ数(ボスドロップ分)" class="mt-0 pt-0" type="number"
+                <v-text-field label="周回時のドロップ数(特攻以外)" class="mt-0 pt-0" type="number"
                   v-model.number="inputs.normalStageBossDrop" dense outlined>
                 </v-text-field>
               </v-col>
@@ -172,14 +172,14 @@
             </v-row>
             <v-row>
               <v-col class="mt-n2 pt-0">
-                <v-text-field label="所持しているやる気草(50)" class="mt-0 pt-0" type="number"
+                <v-text-field label="やる気草(50)の所持数" class="mt-0 pt-0" type="number"
                   v-model.number="inputs.staminaItem50" dense outlined>
                 </v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col class="mt-n2 pt-0">
-                <v-text-field label="所持しているやる気草(100)" class="mt-0 pt-0" type="number"
+                <v-text-field label="やる気草(100)の所持数" class="mt-0 pt-0" type="number"
                   v-model.number="inputs.staminaItem100" dense outlined>
                 </v-text-field>
               </v-col>
