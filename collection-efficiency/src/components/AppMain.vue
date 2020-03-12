@@ -362,7 +362,7 @@
         goal: 200000,
 
         // イベント日数
-        totalDaysOfEvent: 8,
+        totalDaysOfEvent: 10,
 
         // イベント開始時のやる気
         startStamina: 400,
