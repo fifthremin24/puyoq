@@ -329,7 +329,7 @@
       debug: false,
 
       inputs: {
-        version: 3,
+        version: 4,
 
         // セットしている特攻枚数
         eventAbilityCards: [
@@ -365,10 +365,10 @@
         totalDaysOfEvent: 8,
 
         // イベント開始時のやる気
-        startStamina: 300,
+        startStamina: 400,
 
         // スタミナ上限
-        maxStamina: 300,
+        maxStamina: 400,
 
         // 所持やる気草
         staminaItem50: 13,
