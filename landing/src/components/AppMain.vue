@@ -29,14 +29,22 @@
               <v-subheader>ギルド内</v-subheader>
             </v-row>
             <v-row class="mr-0 mt-n5" align="center" justify="space-around">
-              <v-checkbox v-for="x in inputs.eventAbilityCards" v-bind:key="x.label" v-model="x.internal_supporter" :label="x.label">
+              <v-checkbox v-for="x in inputs.eventAbilityCards.slice(0, 3)" v-bind:key="x.label" v-model="x.internal_supporter" :label="x.label">
+              </v-checkbox>
+            </v-row>
+            <v-row class="mr-0 mt-n5" align="center" justify="space-around">
+              <v-checkbox v-for="x in inputs.eventAbilityCards.slice(3, 6)" v-bind:key="x.label" v-model="x.internal_supporter" :label="x.label">
               </v-checkbox>
             </v-row>
             <v-row>
               <v-subheader>ギルド外</v-subheader>
             </v-row>
             <v-row class="mr-0 mt-n5" align="center" justify="space-around">
-              <v-checkbox v-for="x in inputs.eventAbilityCards" v-bind:key="x.label" v-model="x.external_supporter" :label="x.label">
+              <v-checkbox v-for="x in inputs.eventAbilityCards.slice(0, 3)" v-bind:key="x.label" v-model="x.external_supporter" :label="x.label">
+              </v-checkbox>
+            </v-row>
+            <v-row class="mr-0 mt-n5" align="center" justify="space-around">
+              <v-checkbox v-for="x in inputs.eventAbilityCards.slice(3, 6)" v-bind:key="x.label" v-model="x.external_supporter" :label="x.label">
               </v-checkbox>
             </v-row>
           </v-card-text>
@@ -122,24 +130,29 @@
 
       stageDefinition: {
         "甘口": {
-            card_drops: [2, 3, 4, 6, 10], // 特攻ドロップ (Lv1 .. Lv5)
-            chance_boss_drop: 50,         // チャンスボスドロップ
+          stamina: 10,                 // 消費やる気
+          cardDrops: [3, 4, 5, 8, 12, 35], // 特攻ドロップ (Lv1 .. Lv5)
+          chanceBossDrop: 50,          // チャンスボスドロップ
         },
         "中辛": {
-            card_drops: [4, 6, 8, 12, 20],
-            chance_boss_drop: 75,
+          stamina: 15,
+          cardDrops: [5, 8, 10, 16, 24, 70],
+          chanceBossDrop: 75,
         },
         "辛口": {
-            card_drops: [6, 9, 12, 18, 30],
-            chance_boss_drop: 140,
+          stamina: 20,
+          cardDrops: [8, 12, 15, 24, 36, 105],
+          chanceBossDrop: 140,
         },
         "激辛": {
-            card_drops: [12, 18, 24, 36, 60],
-            chance_boss_drop: 250,
+          stamina: 30,
+          cardDrops: [15, 24, 30, 48, 72, 210],
+          chanceBossDrop: 250,
         },
         "超激辛": {
-            card_drops: [24, 36, 48, 72, 120],
-            chance_boss_drop: 500,
+          stamina: 50,
+          cardDrops: [30, 48, 60, 96, 144, 420],
+          chanceBossDrop: 500,
         },
       },
 
@@ -150,6 +163,7 @@
         { text: "特攻Lv3", value: "lv3" },
         { text: "特攻Lv4", value: "lv4" },
         { text: "特攻Lv5", value: "lv5" },
+        { text: "特攻Lv6", value: "lv6" },
         { text: "サポ", value: "supporter" },
         { text: "ドロップ数", value: "drop" },
       ],
@@ -159,6 +173,7 @@
         { text: "特攻Lv3", value: "lv3" },
         { text: "特攻Lv4", value: "lv4" },
         { text: "特攻Lv5", value: "lv5" },
+        { text: "特攻Lv6", value: "lv6" },
         { text: "特攻合計", value: "sum" },
       ],
 
@@ -168,13 +183,14 @@
       debug: false,
 
       inputs: {
-        version: 2,
+        version: 3,
         eventAbilityCards: [
           { label: "Lv1", index: 0, value: 9, internal_supporter: true, external_supporter: true },
           { label: "Lv2", index: 1, value: 1, internal_supporter: true, external_supporter: true },
           { label: "Lv3", index: 2, value: 1, internal_supporter: true, external_supporter: true },
           { label: "Lv4", index: 3, value: 0, internal_supporter: true, external_supporter: true },
           { label: "Lv5", index: 4, value: 0, internal_supporter: true, external_supporter: true },
+          { label: "Lv6", index: 5, value: 0, internal_supporter: true, external_supporter: true },
         ],
         currentCount: 240808,
         targetCount: 242424,
@@ -265,7 +281,7 @@
           console.log("Too small diff: " + diff)
           return
         }
-        if (diff > 5000)
+        if (diff > 8000)
         {
           this.landingErrorMessage = "目標値が遠すぎて着地計算できません。"
           console.log("Too large diff: " + diff)
@@ -278,8 +294,7 @@
         if (this.createLandingPlanTableSimple(r, diff, combi) ||
             // 組み合わせで着地する場合
             this.createLandingPlanTableRecur(r, diff, combi, 1) ||
-            this.createLandingPlanTableRecur(r, diff, combi, 2) ||
-            this.createLandingPlanTableRecur(r, diff, combi, 3))
+            this.createLandingPlanTableRecur(r, diff, combi, 2))
         {
           this.landingSucceeded = true
           return r
@@ -289,17 +304,15 @@
         return
       },
       createLandingPlanTableSimple: function (r, diff, combi) {
-        let found = combi.find(x => x.drop == diff);
-        if (found) {
-          r.push(found)
-          return true
-        }
-        
-        found = combi.find(x => x.drop == diff / 2);
-        if (found) {
-          r.push(found)
-          r.push(found)
-          return true
+        let max = 3;
+        for (let n = 1; n <= max; n++) {
+          let found = combi.find(x => x.drop == diff / n);
+          if (found) {
+            for (let i = 0; i < n; i++) {
+              r.push(found)
+            }
+            return true
+          }
         }
 
         return false
@@ -372,6 +385,7 @@
           lv3: combi[2],
           lv4: combi[3],
           lv5: combi[4],
+          lv6: combi[5],
           supporter: this.createSupporterName(supporter, supporter_mode),
           chance_boss: difficulty,
           drop: total_drop,
@@ -387,7 +401,7 @@
       },
       calcTotalDrop: function (difficulty, combi, supporter, supporter_mode) {
         let stage = this.stageDefinition[difficulty]
-        let card_drop = this.sumProduct(stage.card_drops, combi)
+        let cardDrop = this.sumProduct(stage.cardDrops, combi)
         
         let supporter_drop = 0
         if (supporter_mode != "none")
@@ -395,12 +409,12 @@
           // チャンボ甘口で Lv2 の外部サポのみの場合 56 になる
           // 外部サポの切り上げをしてから特攻効果を 3 倍にする流れ
           // ceil(3 / 2) * 3 + 50 = 56
-          supporter_drop = stage.card_drops[supporter.index]
+          supporter_drop = stage.cardDrops[supporter.index]
           if (supporter_mode == "external")
             supporter_drop = Math.ceil(supporter_drop / 2)
         }
 
-        return (card_drop + supporter_drop) * 3 + stage.chance_boss_drop
+        return (cardDrop + supporter_drop) * 3 + stage.chanceBossDrop
       },
       sumProduct: function (arr1, arr2) {
         return arr1
@@ -424,26 +438,28 @@
         return r
       },
       calcEventCardCombination: function (start, finish, cards) {
-        let rec = function (r, max, curr, c1, c2, c3, c4, c5, l1, l2, l3, l4, l5) {
-          let n = c1 + c2 + c3 + c4 + c5
+        let rec = function (r, max, curr, c1, c2, c3, c4, c5, c6, l1, l2, l3, l4, l5, l6) {
+          let n = c1 + c2 + c3 + c4 + c5 + c6
           if (n == max) {
-            r.push([c1, c2, c3, c4, c5])
+            r.push([c1, c2, c3, c4, c5, c6])
             return
           }
           if (l1 > 0 && curr <= 1)
-            rec(r, max, 1, c1 + 1, c2, c3, c4, c5, l1 - 1, l2, l3, l4, l5)
+            rec(r, max, 1, c1 + 1, c2, c3, c4, c5, c6, l1 - 1, l2, l3, l4, l5, l6)
           if (l2 > 0 && curr <= 2)
-            rec(r, max, 2, c1, c2 + 1, c3, c4, c5, l1, l2 - 1, l3, l4, l5)
+            rec(r, max, 2, c1, c2 + 1, c3, c4, c5, c6, l1, l2 - 1, l3, l4, l5, l6)
           if (l3 > 0 && curr <= 3)
-            rec(r, max, 3, c1, c2, c3 + 1, c4, c5, l1, l2, l3 - 1, l4, l5)
+            rec(r, max, 3, c1, c2, c3 + 1, c4, c5, c6, l1, l2, l3 - 1, l4, l5, l6)
           if (l4 > 0 && curr <= 4)
-            rec(r, max, 4, c1, c2, c3, c4 + 1, c5, l1, l2, l3, l4 - 1, l5)
+            rec(r, max, 4, c1, c2, c3, c4 + 1, c5, c6, l1, l2, l3, l4 - 1, l5, l6)
           if (l5 > 0 && curr <= 5)
-            rec(r, max, 5, c1, c2, c3, c4, c5 + 1, l1, l2, l3, l4, l5 - 1)
+            rec(r, max, 5, c1, c2, c3, c4, c5 + 1, c6, l1, l2, l3, l4, l5 - 1, l6)
+          if (l6 > 0 && curr <= 6)
+            rec(r, max, 6, c1, c2, c3, c4, c5, c6 + 1, l1, l2, l3, l4, l5, l6 - 1)
         }
         let r = []
         for (let max = start; max <= finish; max++)
-          rec(r, max, 1, 0, 0, 0, 0, 0, ...cards)
+          rec(r, max, 1, 0, 0, 0, 0, 0, 0, ...cards)
         return r
       },
     },
