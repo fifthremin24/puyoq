@@ -277,27 +277,27 @@
       stageDefinition: {
         "甘口": {
           stamina: 10,                 // 消費やる気
-          cardDrops: [2, 3, 4, 6, 10], // 特攻ドロップ (Lv1 .. Lv5)
+          cardDrops: [3, 4, 5, 8, 12, 35], // 特攻ドロップ (Lv1 .. Lv5)
           chanceBossDrop: 50,          // チャンスボスドロップ
         },
         "中辛": {
           stamina: 15,
-          cardDrops: [4, 6, 8, 12, 20],
+          cardDrops: [5, 8, 10, 16, 24, 70],
           chanceBossDrop: 75,
         },
         "辛口": {
           stamina: 20,
-          cardDrops: [6, 9, 12, 18, 30],
+          cardDrops: [8, 12, 15, 24, 36, 105],
           chanceBossDrop: 140,
         },
         "激辛": {
           stamina: 30,
-          cardDrops: [12, 18, 24, 36, 60],
+          cardDrops: [15, 24, 30, 48, 72, 210],
           chanceBossDrop: 250,
         },
         "超激辛": {
           stamina: 50,
-          cardDrops: [24, 36, 48, 72, 120],
+          cardDrops: [30, 48, 60, 96, 144, 420],
           chanceBossDrop: 500,
         },
       },
@@ -318,6 +318,7 @@
         { text: "特攻Lv3", value: 2 },
         { text: "特攻Lv4", value: 3 },
         { text: "特攻Lv5", value: 4 },
+        { text: "特攻Lv6", value: 5 },
       ],
 
       // 自分のデッキに設定できる最大のカード数
@@ -329,7 +330,7 @@
       debug: false,
 
       inputs: {
-        version: 4,
+        version: 5,
 
         // セットしている特攻枚数
         eventAbilityCards: [
@@ -338,11 +339,12 @@
           { label: "Lv3", index: 2, value: 1 },
           { label: "Lv4", index: 3, value: 0 },
           { label: "Lv5", index: 4, value: 0 },
+          { label: "Lv6", index: 5, value: 0 },
         ],
 
         // サポータ設定
         eventAbilitySupporter: {
-          selectedValue: 4,
+          selectedValue: 5,
           externalSupporter: false,
         },
 
@@ -359,7 +361,7 @@
         chanceBossLevel: "超激辛",
 
         // 目標数
-        goal: 200000,
+        goal: 300000,
 
         // イベント日数
         totalDaysOfEvent: 10,
