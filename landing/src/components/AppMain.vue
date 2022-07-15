@@ -217,9 +217,9 @@ export default {
         chanceBossDrop: 250,
       },
       超激辛: {
-        stamina: 50,
-        cardDrops: [30, 48, 60, 96, 144, 420],
-        chanceBossDrop: 500,
+        stamina: 100,
+        cardDrops: [50, 86, 111, 182, 295, 861],
+        chanceBossDrop: 1000,
       },
     },
 
@@ -391,7 +391,7 @@ export default {
         console.log("Too small diff: " + diff);
         return;
       }
-      if (diff > 8000) {
+      if (diff > 27000) {
         this.landingErrorMessage = "目標値が遠すぎて着地計算できません。";
         console.log("Too large diff: " + diff);
         return;
